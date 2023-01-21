@@ -25,7 +25,7 @@ def main():
                         help='The directory the generated sources file will save sources to',
                         default='nuget-sources')
     args = parser.parse_args()
-
+    
     sources = []
 
     with tempfile.TemporaryDirectory(dir=Path()) as tmp:
@@ -41,7 +41,7 @@ def main():
                 '--command=sh', '--runtime=org.freedesktop.Sdk//{}'.format(args.freedesktop), '--share=network',
                 '--filesystem=host', 'org.freedesktop.Sdk.Extension.dotnet{}//{}'.format(args.dotnet, args.freedesktop), '-c',
                 'PATH="${PATH}:'+'/usr/lib/sdk/dotnet{0}/bin" LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/sdk/dotnet{0}/lib" exec dotnet restore "$@"'.format(args.dotnet),
-                '--', '--packages', tmp, args.project] + runtime_args)
+                '--', '--packages', tmp, project] + runtime_args)
 
         for path in Path(tmp).glob('**/*.nupkg.sha512'):
             name = path.parent.parent.name
